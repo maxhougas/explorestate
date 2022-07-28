@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <./hougasconsts.h>
+#include <./headers/hougasconsts.h>
 
 #define WIDTH 4
 
@@ -78,10 +78,44 @@ SKIP SKIP
 It seems like the original recursive design was the way to go.
 */
 
-int recursiveExplore(int* vec, int depth, int fin)
+int nextEx(int* depthDone, int* vec, unsigned int width, unsigned int fin)
+{
+ int ret = SUCCESS;
+ *depthDone = 0;
+
+ if(!(vec && depthDone))
+ {
+  ret = NULL_STRUCTURE;
+ }
+ else if(width < 0 || fin < 0 || fin >= width || vec[fin] == 0)
+ {
+  ret = INVALID_VALUE;
+ }
+ else if(fin == width-1)
+ {
+  depthDone = 1;
+ }
+ else
+ {
+  vec[fin] -= 1;
+  vec[fin+1] += 1;
+ }
+
+
+}
+
+int recursiveExplore(int* vec, unsigned int width, unsigned int fin)
 {
  int ret = SUCCESS;
 
- if
+ if(!vec)
+  ret = NULL_STRUCTURE;
+ else if(width < 0 || fin < 0 || fin >= width || vec[fin] == 0)
+  ret = INVALID_VALUE;
+ else
+ {
+  if(nextEX())
+ }
 
+ return ret;
 }
