@@ -94,11 +94,14 @@ int nextEx(int* depthDone, int* vec, unsigned int width, unsigned int fin)
  else if(fin == width-1)
  {
   depthDone = 1;
+  
  }
  else
  {
   vec[fin] -= 1;
-  vec[fin+1] += 1;
+  fin++;
+  vec[fin] += 1;
+  nextEx(depthDone,vec,width,fin);
  }
 
 
