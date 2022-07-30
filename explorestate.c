@@ -1,7 +1,10 @@
 #include <stdio.h>
-#include <../headers/hougasconsts.h>
+#include <stdlib.h>
+#include "../headers/hougasconsts.h"
+#include "../headers/hougasvectors.h"
 
 #define WIDTH 4
+#define DEPTH 2
 
 /*
 for a 4 vector depth 1 the pattern should go
@@ -78,7 +81,12 @@ SKIP SKIP
 It seems like the original recursive design was the way to go.
 */
 
-int iterExploreStates(int* vec, unsigned int width, unsigned int fin)
+/*
+this will behave strangely if vec is not [depth,0,...]
+may fail if vec contains negative numbers
+*/
+
+int iterExploreStates(int* vec, int width, int fin)
 {
  int ret = SUCCESS;
 
@@ -88,30 +96,56 @@ int iterExploreStates(int* vec, unsigned int width, unsigned int fin)
   ret = INVALID_VALUE;
  else
  {
+  int depth;
+  vectorReduce(&depth,vec,width,ADD,INT);
+  printf("%d\n",depth);
+  
+  while(vec[width-1] < depth)
+  {
+   if(fin != width-1)
+   {
+    vec[fin]--;
+    fin++;
+    vec[fin]++;
+   }
+   else
+   {
+    do
+     fin--;
+    while (vec[fin] == 0);
 
+    vec[fin]--;
+    fin++;
+    vec[fin]++;
+
+    if(fin != width-1)
+    {
+     vec[fin] += vec[width-1];
+     vec[width-1] = 0;
+    }
+   }
+
+   /*payload*/
+   vectorPrint(vec,width,INT);
+  }
+  
  }
 
  return ret;
 }
 
+/*
 int nextEx(int* depthDone, int* vec, unsigned int width, unsigned int fin)
 {
  int ret = SUCCESS;
  *depthDone = 0;
 
  if(!(vec && depthDone))
- {
   ret = NULL_STRUCTURE;
- }
  else if(width < 0 || fin < 0 || fin >= width || vec[fin] == 0)
- {
   ret = INVALID_VALUE;
- }
  else if(fin == width-1)
- {
   depthDone = 1;
-  
- }
  else
  {
   vec[fin] -= 1;
@@ -119,10 +153,8 @@ int nextEx(int* depthDone, int* vec, unsigned int width, unsigned int fin)
   vec[fin] += 1;
   nextEx(depthDone,vec,width,fin);
  }
-
-
 }
-/*
+
 int recursiveExplore(int* vec, unsigned int width, unsigned int fin)
 {
  int ret = SUCCESS;
@@ -139,3 +171,16 @@ int recursiveExplore(int* vec, unsigned int width, unsigned int fin)
  return ret;
 }
 */
+
+int main(int argc, int argv)
+{
+ int* vec = (int*)malloc(sizeof(int));
+ /*int i;
+ for(i=0;i<WIDTH;i++)
+  vec[i]=0;*/
+ vectorPrint(vec,WIDTH,INT);
+ vec[0] = DEPTH;
+
+ iterExploreStates(vec,WIDTH,0);
+ printf("done");
+}
