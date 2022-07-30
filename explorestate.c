@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <./headers/hougasconsts.h>
+#include <../headers/hougasconsts.h>
 
 #define WIDTH 4
 
@@ -78,6 +78,22 @@ SKIP SKIP
 It seems like the original recursive design was the way to go.
 */
 
+int iterExploreStates(int* vec, unsigned int width, unsigned int fin)
+{
+ int ret = SUCCESS;
+
+ if(!vec)
+  ret = NULL_STRUCTURE;
+ else if(width < 0 || fin < 0 || vec[fin] == 0)
+  ret = INVALID_VALUE;
+ else
+ {
+
+ }
+
+ return ret;
+}
+
 int nextEx(int* depthDone, int* vec, unsigned int width, unsigned int fin)
 {
  int ret = SUCCESS;
@@ -106,7 +122,7 @@ int nextEx(int* depthDone, int* vec, unsigned int width, unsigned int fin)
 
 
 }
-
+/*
 int recursiveExplore(int* vec, unsigned int width, unsigned int fin)
 {
  int ret = SUCCESS;
@@ -122,3 +138,4 @@ int recursiveExplore(int* vec, unsigned int width, unsigned int fin)
 
  return ret;
 }
+*/
